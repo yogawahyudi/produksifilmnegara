@@ -19,6 +19,7 @@
     <!-- Custom CSS -->
     <link href="{{asset('/dist/css/style.min.css')}}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{asset('assets/libs/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <script src="{{asset('/assets/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -255,6 +256,7 @@
     <!--Custom JavaScript -->
     <script src="{{asset('/dist/js/custom.js')}}"></script>
     <script src="{{asset('/dist/js/formatRupiah.js')}}"></script>
+    <script src="{{asset('assets/libs/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready( function () {

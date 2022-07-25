@@ -8,7 +8,7 @@
                         <div class="row">
                             <div class="col-12" style="height: calc(100vh - 200px); overflow:hidden">
                                 <div class="message-container" id="buble" style="height: 100%; overflow-y:scroll; overflow-x:hidden; margin-right: -50px;">
-
+                                    
                                 </div>
                             </div>
                         </div>
@@ -47,11 +47,13 @@
             $('#send').on('click', () => {
                 send()
             })
+
             $('input[name="input"]').on('keypress', (e) => {
                 if (e.which == 13) {
                     send()
                 }
             })
+
 
             const send = () => {
                 input = $('input[name="input"]').val()
@@ -61,7 +63,7 @@
                     '<div class="col-10 d-flex justify-content-end" style="padding-right:48px">' +
                     '<div class="card style="width: auto">' +
                     '<div class="card-body">' +
-                    '<p class="mb-0 mt-0" id="text">' + input + '</p>' +
+                    '<p class="mb-0 mt-0" id="text">'++'</p>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -70,77 +72,49 @@
 
 
                 if (input != "") {
-                    $.ajax({
-                        url: "/chatbot/stemming",
-                        method: "POST",
-                        data: {
-                            input: input
-                        },
-                        success: (data) => {
-                            console.log(data)
-                                $('#buble').append(
+                   $.ajax({
+                    url: "/chatbot/listen",
+                    method: "POST",
+                    data: {
+                        input: input
+                    },
+                    success: (data) => {
+                        console.log(data)
+                        if(typeof data === 'object' && data !== null){
+                            $('#buble').append(
                                 '<div class="row mb-1 d-flex justify-content-start" id="botBuble">' +
                                 '<div class="col-10  d-flex justify-content-start">' +
                                 '<div class="card" style="width: auto">' +
                                 '<div class="card-body" style="background-color: #eee">' +
-                                '<p id="text"> Hasil Stemming : '+data+'</p>' +
+                                '<p id="text"> Pattern found : pattern = ' +data['pattern']+ '</p>' +                                                            
+                                '<p id="text"> Pattern found at index : ' +data['index']+ '</p>' +
+                                '<p id="text"> Respon dari bot : ' +data['respon']+ '</p>' +
                                 '</div>' +
                                 '</div>' +
                                 '</div>' +
                                 '</div>'
                             )
-
-
-                                $.ajax({
-                                    url: "/chatbot/listen",
-                                    method: "POST",
-                                    data: {
-                                        input: input
-                                    },
-                                    success: (data) => {
-                                        console.log(data)
-                                        if(typeof data === 'object' && data !== null){
-                                            $('#buble').append(
-                                                '<div class="row mb-1 d-flex justify-content-start" id="botBuble">' +
-                                                '<div class="col-10  d-flex justify-content-start">' +
-                                                '<div class="card" style="width: auto">' +
-                                                '<div class="card-body" style="background-color: #eee">' +
-                                                '<p id="text"> Pattern found : pattern = ' +data['pattern']+ '</p>' +                                                            
-                                                '<p id="text"> Pattern found at index : ' +data['index']+ '</p>' +
-                                                '<p id="text"> Respon dari bot : ' +data['respon']+ '</p>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>'
-                                            )
-                                        } else {
-                                                $('#buble').append(
-                                                '<div class="row mb-1 d-flex justify-content-start" id="botBuble">' +
-                                                '<div class="col-10  d-flex justify-content-start">' +
-                                                '<div class="card" style="width: auto">' +
-                                                '<div class="card-body" style="background-color: #eee">' +
-                                                '<p id="text"> Respon dari bot : ' +data+ '</p>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>'
-                                            )
-                                        }
-                                        messageContainer = $('.message-container')
-                                        messageContainer.scrollTop(messageContainer.height())
-
-                                    },
-                                    error: (data)=>{
-                                        console.log(data);
-                                    }
-                                })
-
-
-                        },
-                        error : (data)=> {
-                            console.log(data);
+                        } else {
+                                $('#buble').append(
+                                '<div class="row mb-1 d-flex justify-content-start" id="botBuble">' +
+                                '<div class="col-10  d-flex justify-content-start">' +
+                                '<div class="card" style="width: auto">' +
+                                '<div class="card-body" style="background-color: #eee">' +
+                                '<p id="text"> Respon dari bot : ' +data+ '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>'
+                            )
                         }
-                    })
+                        messageContainer = $('.message-container')
+                        messageContainer.scrollTop(messageContainer.height())
+
+                    },
+                    error: (data)=>{
+                        console.log(data);
+                    }
+                })
                 }
             }
         })

@@ -16,8 +16,8 @@
             <script>
         $('document').ready(()=>{
             $('#selectStudio').on('change', ()=> {
+                $('#pilih a').remove()
                 studi = $('#selectStudio').val()
-                console.log(studi)
                 user = "{{$users}}"
                 url = "{{route('formPemesanan.transaksi', ['params1','params2'])}}"
                 newUrl = url.replace('params1', user).replace('params2', studi);

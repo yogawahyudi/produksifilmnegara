@@ -95,14 +95,20 @@ Route::prefix('assets/dashboard')->group(function () {
     Route::get('/bot', [ChatbotController::class, 'Index_assets'])->name('index.bot.assets')->middleware(['assets', 'assets.verified']);
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('index.transaksi')->middleware(['assets', 'assets.verified']);
     Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('create.transaksi')->middleware(['assets', 'assets.verified']);
-    Route::get('/transaksi/{id}', [TransaksiController::class, 'view'])->name('view.transaksi')->middleware(['assets', 'assets.verified']);
     Route::get('/transaksi/studio', [TransaksiController::class, 'pilihStudio'])->name('pilihStudio.transaksi')->middleware(['assets', 'assets.verified']);
+    Route::get('/transaksi/{id}', [TransaksiController::class, 'view'])->name('view.transaksi')->middleware(['assets', 'assets.verified']);
     Route::get('/transaksi/user/{id}', [TransaksiController::class, 'IndexUser'])->name('indexUser.transaksi')->middleware(['assets', 'assets.verified']);
     Route::post('/transaksi/users/store', [AssetsController::class, 'storeUser'])->name('storeUser.transaksi')->middleware(['assets', 'assets.verified']);
     Route::get('/transaksi/create/user/{id_user}/studio/{studio}', [TransaksiController::class, 'formPemesanan'])->name('formPemesanan.transaksi')->middleware(['assets', 'assets.verified']);
+    Route::get('/transaksi/{id}/cancel', [TransaksiController::class, 'transaksiCancelAssets'])->name('cancel.transaksi.assets')->middleware(['assets', 'assets.verified']);
+    Route::post('/transaksi/store/{id_studio}/{id_user}', [TransaksiController::class, 'storeTransaksiAsset'])->name('store.transaksi.assets')->middleware(['assets', 'assets.verified']);
+    Route::post('/transaksi/{id}/extends', [TransaksiController::class, 'extends'])->name('extends.transaksi.assets')->middleware(['assets', 'assets.verified']);
+    Route::post('/transaksi/{id}/selesai', [TransaksiController::class, 'selesai'])->name('selesai.transaksi.assets')->middleware(['assets', 'assets.verified']);
 
     Route::get('/pembayaran', [PembayaranController::class, 'indexAssets'])->name('index.assets.pembayaran')->middleware(['assets', 'assets.verified']);
+    Route::post('/pembayaran/{id}/verif', [PembayaranController::class, 'assetsVerif'])->name('verif.assets.pembayaran')->middleware(['assets', 'assets.verified']);
 });
+
 
 Route::prefix('manager/dashboard')->group(function () {
     Route::get('/register', [ManagerController::class, 'ManagerRegister'])->name('manager.register');
@@ -129,7 +135,10 @@ Route::get('/studio', [StudioController::class, 'index_user'])->name('user.studi
 Route::get('/studio/{id}', [StudioController::class, 'detailStudioUser'])->name('detail.studio.user');
 Route::get('/order-summary/{id}', [OrderController::class, 'indexOrder'])->name('order.studio.user')->middleware(['auth', 'verified']);
 Route::get('/transaksi', [TransaksiController::class, 'indexTransaksiUser'])->name('index.transaksi.user')->middleware(['auth', 'verified']);
+Route::get('/transaksi/{id}', [TransaksiController::class, 'viewTransaksiUser'])->name('view.transaksi.user')->middleware(['auth', 'verified']);
 Route::post('/transaksi/store/{id}', [TransaksiController::class, 'storeTransaksiUser'])->name('store.transaksi.user')->middleware(['auth', 'verified']);
+
+Route::post('/tagihan/{id}/payments', [PembayaranController::class, 'userStore'])->name('store.pembayaran.user')->middleware(['auth', 'verified']);
 
 Route::get('/profile', [ProfileController::class, 'indexProfile'])->name('index.profile')->middleware(['auth', 'verified']);
 Route::post('/profile/{id}/update-img', [ProfileController::class, 'updateImagesUser'])->name('update.images.user')->middleware(['auth', 'verified']);
@@ -147,10 +156,6 @@ Route::post('/chatbot/bm', [BoyerMooreController::class, 'hasilBooyerMore'])->na
 
 Route::get('/setWebhook', [BOTTelegramController::class, 'setWebhook']);
 Route::post('/{token}/webhook', [BOTTelegramController::class, 'commandHandlerWebhook']);
-// Route::post('/{$token}/webhook', function ($token) {
-//     $updates = Telegram::getWebhookUpdates();
 
-//     return 'ok';
-// });
 
 require __DIR__ . '/auth.php';

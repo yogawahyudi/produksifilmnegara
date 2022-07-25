@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Admins;
 use App\Models\Assets;
 use App\Models\Manager;
+use App\Models\Pembayaran;
+use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +48,14 @@ class ManagerController extends Controller
 
     public function Dashboard()
     {
-        return view('manager.pages.dashboard');
+        $now = Carbon::now()->isoFormat('YYYY-MM-DD');
+        $userC = User::all()->count();
+        $transaksi = Transaksi::all()->count();
+        $transaksib = Transaksi::where('status_tran', 'dibatalkan')->count();
+        $penHar = Pembayaran::where('created_at', 'LIKE', $now . ' %')->where('verified', 1)->sum('nominal');
+        $penBul = Pembayaran::where('created_at', 'LIKE', Carbon::now()->isoFormat('YYYY-MM') . '%')->sum('nominal');
+        $penTa = Pembayaran::where('created_at', 'LIKE', Carbon::now()->isoFormat('YYYY') . '%')->sum('nominal');
+        return view('manager.pages.dashboard', compact(['userC', 'userC', 'transaksi', 'transaksi', 'transaksib', 'transaksib', 'penHar', 'penBul', 'penTa']));
     }
 
 

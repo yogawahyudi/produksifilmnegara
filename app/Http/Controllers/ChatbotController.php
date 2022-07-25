@@ -14,6 +14,8 @@ class ChatbotController extends Controller
 {
     public function Index()
     {
+        $studio = Studio::all();
+        dd($studio);
         return view('users.pages.chatbot.chatbot');
     }
 
@@ -28,9 +30,9 @@ class ChatbotController extends Controller
 
     public function listening(Request $request)
     {
-        $knowledge = Pertanyaan::all();
+        $pertanayaan = Pertanyaan::all();
 
-        foreach ($knowledge as $kn) {
+        foreach ($pertanayaan as $kn) {
             $data[] = [
                 'text' => $kn['pertanyaan'],
                 'class' => $kn['label']
@@ -79,7 +81,6 @@ class ChatbotController extends Controller
             $textProcessing = new TextProcessingController;
             $input = $textProcessing->stemming($request['input']);
             $pattern = Pattern::where('label', $resultnb)->get();
-
             $boyer = new BoyerMooreController;
             for ($i = 0; $i < count($pattern); $i++) {
                 $result = $boyer->BoyerMoore($input, $pattern[$i]['pattern']);

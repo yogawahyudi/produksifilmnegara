@@ -157,7 +157,8 @@
             email_perusahaan = $('input[name="email_perusahaan"]').val()
             nama_perusahaan = $('input[name="nama_perusahaan"]').val()
             no_perusahaan = $('input[name="no_perusahaan"]').val()
-            tanggal = $('#tanggal').val()
+            tanggal = $('input#tanggal').val()
+            console.log(tanggal);
             durasi_shooting = $('input[name="durasi_shooting"]').val()
             durasi_setting = $('input[name="durasi_setting"]').val()
 
@@ -191,7 +192,7 @@
                 $('#no_tel_per').text(no_perusahaan)
                 $('#shooting').text(formatRupiah(harga_shooting,"Rp"))
                 $('#setting').text(formatRupiah(harga_setting,"Rp"))
-                $('#tanggal').text(tanggal)
+                $('h6#tanggall').text(tanggal)
 
                 total = harga_shooting + harga_setting
                 $('#total').text(formatRupiah(total,  "Rp"))
@@ -206,6 +207,7 @@
         $('#bayar').on('click', ()=> {
             $('form').submit()
         })
+
         $('.input-group.date').datepicker({
             format: "yyyy-mm-dd",
             todayHighlight: true,

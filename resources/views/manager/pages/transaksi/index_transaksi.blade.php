@@ -11,12 +11,7 @@
 @section('content')
     <div class="container-fluid">
         @include('alert.alert')
-       <div class="row mb-5 mt-5">
-            <div class="col-12">
-                <a href="{{route('create.transaksi')}}" type="button" class="btn btn-danger"><i class="bx bx-plus"></i>Transaksi</a>
-            </div>
-       </div>
-       <div class="row">
+        <div class="row">
             <div class="table-responsive">
                 <table class="table table-striped align-middle">
                     <thead>
@@ -24,48 +19,75 @@
                             <th>Nama</th>
                             <th>Nama Perusahaan</th>
                             <th>No Hp</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal &nbsp; &nbsp; </th>
                             <th>Studio</th>
                             <th>Status</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse ($transaksi as $tran)
+                        @php
+                            foreach ($tran->transaksi_items as $item){
+                                $studio[] = $item->studio ;
+                                $tanggal[] = $item->tanggal;
+                            }
+                            $studio = array_unique($studio);
+                            $tanggal = array_unique($tanggal);
+
+                            foreach ($tran->tagihan as $item){
+                                $lunas[] = $item->lunas;
+                                    $jenis[] = $item->jenis;
+                            }
+                        @endphp  
                         <tr>
-                            <td>Yoga</td>
-                            <td>Dxcode</td>
-                            <td>082213462424</td>
-                            <td>22-10-2022</td>
-                            <th>Studio</th>                            
-                            <td><span class="badge bg-primary">Berlangsung<span></span></span></td>
+                            <td>{{$tran->nama}}</td>
+                            <td>{{$tran->nama_per}}</td>
+                            <td>{{$tran->no_hp}}</td>
                             <td>
-                                <a href={{route('view.manager.transaksi', 1)}} class="btn btn-link">
-                                    <i class="bx bx-show-alt bx-fw text-primary"></i></td>
-                                </a>
-                        </tr>
-                          <tr>
-                            <td>Yoga</td>
-                            <td>Dxcode</td>
-                            <td>082213462424</td>
-                            <td>22-10-2022</td>
-                            <th>Studio</th>                        
-                            <td><span class="badge bg-success">Selesai<span></span></span></td>
+                                <ul>
+                                    @foreach ($tanggal as $item)
+                                        <li>{{$item}}</li>    
+                                    @endforeach
+                                    @php
+                                        $tanggal = [];    
+                                    @endphp
+                                </ul>
+                            </td>
                             <td>
-                                <a href={{route('view.manager.transaksi', 1)}} class="btn btn-link">
-                                    <i class="bx bx-show-alt bx-fw text-primary"></i></td>
-                                </a>
-                        </tr>
-                          <tr>
-                            <td>Yoga</td>
-                            <td>Dxcode</td>
-                            <td>082213462424</td>
-                            <td>22-10-2022</td>
-                            <th>Studio</th>
-                            <td><span class="badge bg-danger">Dibatalkan<span></span></span></td>
+                                <ul>
+                                    @foreach ($studio as $item)
+                                        <li>{{$item}}</li>    
+                                    @endforeach
+                                    @php
+                                        $studio = [];    
+                                    @endphp
+                                </ul>
+                            </td>                            
                             <td>
-                                <a href={{route('view.manager.transaksi', 1)}} class="btn btn-link">
-                                    <i class="bx bx-show-alt bx-fw text-primary"></i></td>                    
-                                </a>
+                                @if (in_array(0, $lunas))
+                                    @if  (in_array('pelunasan', $jenis))
+                                        <h6>Status : <span class="badge bg-danger">Menunggu Pelunasan</span> </h6>                                          
+                                    @else
+                                        <h6>Status : <span class="badge bg-danger">Menunggu Pembayaran</span> </h6>
+                                    @endif
+                                @else
+                                    @if ($tran->status_tran == "dibatalkan")
+                                    <h6>Status : <span class="badge bg-danger">Dibatalkan</span> </h6>                                          
+                                    @elseif($tran->status_tran == "selesai")
+                                    <h6>Status : <span class="badge bg-success">Selesai</span> </h6>                                                                                  
+                                    @else
+                                    <h6>Status : <span class="badge bg-primary">Berlangsung</span> </h6>                                                                                                                      
+                                    @endif
+                                @endif                            
+                            </td>
                         </tr>
+                        @empty
+                            <tr>
+                                <th colspan="8" class="text-center">Belum ada transaksi</th>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -15,7 +15,8 @@
                   <hr>
                   <div class="row mb-3">
                     <div class="col-12">
-                       <form>
+                       <form action="{{route('store.transaksi.assets' , [$studio->id , $user->id ])}}" method="post">
+                        @csrf
                             <div class="row mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Nama Perusahaan</label>
                                 <input type="text" class="form-control" name="nama_perusahaan" id="nama_perusahaan">
@@ -28,9 +29,11 @@
                                 <label for="exampleInputPassword1" class="form-label">No Telephone Perusahaan</label>
                                 <input type="text" class="form-control" name="no_perusahaan">
                             </div>
-                            <div class="row mb-3">
+                         <div class="row mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Tanggal Booking</label>
-                                    <input type="date" name="tanggal" class="form-control" id="tanggal">
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control" name="tanggal" id="tanggal"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
                             </div>
                             <div class="row">
                                 <div class="input-group mb-3">
@@ -82,7 +85,7 @@
                             <h6>Tanggal : </h6>
                         </div>
                         <div class="col-6">
-                            <h6 id="nama">{{$user->nama}}</h6>
+                            <h6 id="nama">{{$user->name}}</h6>
                             <h6 id="email">{{$user->email}}</h6>
                             <h6 id="no_tel">{{$user->no_hp}}</h6>
                             <h6 id="nama_per"></h6>
@@ -108,7 +111,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="d-grid gap-2 col-6 mx-auto">
-                            <button class="btn btn-danger">Bayar Sekarang</button>
+                            <button class="btn btn-danger" id="pesan">Bayar Sekarang</button>
                         </div>
                     </div>
                 </div>
@@ -148,7 +151,7 @@
             email_perusahaan = $('input[name="email_perusahaan"]').val()
             nama_perusahaan = $('input[name="nama_perusahaan"]').val()
             no_perusahaan = $('input[name="no_perusahaan"]').val()
-            tanggal = $('#tanggal').val()
+            tanggal =  $('#tanggal').val()
             durasi_shooting = $('input[name="durasi_shooting"]').val()
             durasi_setting = $('input[name="durasi_setting"]').val()
 
@@ -182,7 +185,7 @@
                 $('#no_tel_per').text(no_perusahaan)
                 $('#shooting').text(formatRupiah(harga_shooting,"Rp"))
                 $('#setting').text(formatRupiah(harga_setting,"Rp"))
-                $('#tanggal').text(tanggal)
+                $('#tanggall').text(tanggal)
 
                 total = harga_shooting + harga_setting
                 $('#total').text(formatRupiah(total,  "Rp"))
@@ -192,7 +195,26 @@
                 $('#form_pembayaran').addClass('d-none')
                 $('#order-summary').removeClass('d-none')
                 
-        })
+            })
+            if(@json($disDate) != 0 ){
+                $('.input-group.date').datepicker({
+                format: "yyyy-mm-dd",
+                todayHighlight: true,
+                startDate: '{{$now}}',
+                datesDisabled: @json($disDate)
+             });
+            } else {
+                 $('.input-group.date').datepicker({
+                format: "yyyy-mm-dd",
+                todayHighlight: true,
+                startDate: '{{$now}}',
+             });
+            }
+
+            $('#pesan').on('click', ()=>{
+                $('form').submit()
+            })
+            
     })
 </script>
 @endsection

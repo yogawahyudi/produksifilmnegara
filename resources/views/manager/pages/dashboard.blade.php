@@ -23,7 +23,7 @@
                                 <h5 class="card-text">Total User</h5>
                             </div>
                             <div class="row">
-                                <h1 class="fs-1">5</h1>
+                                <h1 class="fs-1">{{$userC}}</h1>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                                 <h5 class="card-text">Transaksi</h5>
                             </div>
                             <div class="row">
-                                <h1 class="fs-1">3</h1>
+                                <h1 class="fs-1">{{$transaksi}}</h1>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                 <h5 class="card-text">Transaksi Dibatalkan</h5>
                             </div>
                             <div class="row">
-                                <h1 class="fs-1">1</h1>
+                                <h1 class="fs-1">{{$transaksib}}</h1>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                                 <h5 class="card-text">Hari Ini</h5>
                             </div>
                             <div class="row">
-                                <h1 class="fs-5">Rp 7.500.000</h1>
+                                <h1 class="fs-5">Rp {{number_format($penHar,2,',','.')}}</h1>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                                 <h5 class="card-text">Bulan Ini</h5>
                             </div>
                             <div class="row">
-                                <h1 class="fs-5">Rp. 10.500.000</h1>
+                                <h1 class="fs-5">Rp. {{number_format($penBul,2,',','.')}}</h1>
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                 <h5 class="card-text">Tahun Ini</h5>
                             </div>
                             <div class="row">
-                                <h1 class="fs-5">Rp. 18.000.000</h1>
+                                <h1 class="fs-5">Rp.  {{number_format($penTa,2,',','.')}}</h1>
                             </div>
                         </div>
                     </div>

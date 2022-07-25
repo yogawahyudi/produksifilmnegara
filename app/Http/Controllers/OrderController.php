@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
 use App\Models\Studio;
+use App\Models\Tagihan;
 use App\Models\Transaksi;
 use App\Models\Transaksi_items;
 use Carbon\Carbon;
@@ -21,9 +23,13 @@ class OrderController extends Controller
             ->where('transaksi_items.studio', '=', $studio->studio)
             ->get();
 
-        foreach ($disabledDay as $dis) [
-            $disDate[] = $dis->tanggal
-        ];
+        if ($disabledDay->isNotEmpty()) {
+            foreach ($disabledDay as $dis) [
+                $disDate[] = $dis->tanggal
+            ];
+        } else {
+            $disDate = 0;
+        }
         $now = Carbon::now()->isoFormat('YYYY-MM-DD');
         return view('users.pages.transaksi.form_pemesanan', compact(['studio', 'studio', 'now', 'now', 'disDate', 'disDate']));
     }
