@@ -15,7 +15,6 @@ class ChatbotController extends Controller
     public function Index()
     {
         $studio = Studio::all();
-        dd($studio);
         return view('users.pages.chatbot.chatbot');
     }
 

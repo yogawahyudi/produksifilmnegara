@@ -14,8 +14,8 @@ class BoyerMooreController extends Controller
         $makeCharTable = new BoyerMooreController;
         $table = $makeCharTable->makeCharTable($pattern);
 
-        for ($i = $patlen - 1; $i < $textlen;) {
-            $t = $i;
+        for ($i = $patlen - 1; $i < $textlen;) { //$i =2 ; 2 < 8
+            $t = $i; //$t = 2
             for ($j = $patlen - 1; $pattern[$j] == $text[$i]; $j--, $i--) {
                 if ($j == 0) return $i;
             }

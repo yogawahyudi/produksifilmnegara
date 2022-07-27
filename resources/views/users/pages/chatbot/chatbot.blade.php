@@ -63,7 +63,7 @@
                     '<div class="col-10 d-flex justify-content-end" style="padding-right:48px">' +
                     '<div class="card style="width: auto">' +
                     '<div class="card-body">' +
-                    '<p class="mb-0 mt-0" id="text">'++'</p>' +
+                    '<p class="mb-0 mt-0" id="text">'+input+'</p>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -86,9 +86,7 @@
                                 '<div class="col-10  d-flex justify-content-start">' +
                                 '<div class="card" style="width: auto">' +
                                 '<div class="card-body" style="background-color: #eee">' +
-                                '<p id="text"> Pattern found : pattern = ' +data['pattern']+ '</p>' +                                                            
-                                '<p id="text"> Pattern found at index : ' +data['index']+ '</p>' +
-                                '<p id="text"> Respon dari bot : ' +data['respon']+ '</p>' +
+                                '<p id="text">' +data['respon']+ '</p>' +
                                 '</div>' +
                                 '</div>' +
                                 '</div>' +
@@ -100,7 +98,7 @@
                                 '<div class="col-10  d-flex justify-content-start">' +
                                 '<div class="card" style="width: auto">' +
                                 '<div class="card-body" style="background-color: #eee">' +
-                                '<p id="text"> Respon dari bot : ' +data+ '</p>' +
+                                '<p id="text">' +data+ '</p>' +
                                 '</div>' +
                                 '</div>' +
                                 '</div>' +

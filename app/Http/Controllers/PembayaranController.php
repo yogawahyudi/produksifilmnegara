@@ -74,18 +74,4 @@ class PembayaranController extends Controller
 
         return redirect()->back();
     }
-
-    public function selesai($id)
-    {
-        $pembayaran = Pembayaran::find($id);
-        $tagihan = Tagihan::find($pembayaran->tagihan_id);
-        if ($tagihan->jenis == "extends" or $tagihan->jenis == "pelunasan") {
-            $transaksi = Transaksi::find($tagihan->transaksi_id);
-            $transaksi->update([
-                'status_tran' => "seselsai"
-            ]);
-
-            return redirect()->back();
-        }
-    }
 }
