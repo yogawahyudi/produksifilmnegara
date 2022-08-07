@@ -36,10 +36,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $i = 0;    
+                            @endphp
                             @foreach ($studio as $td)
                                 <tr>
                                     <td class="text-center">{{$td['studio']}}</td>
-                                    <td><img src="{{asset('assets/images/bg-login.jpg')}}" class="d-block w-100" alt="" srcset=""></td>
+                                    {{-- pake carosel bos --}}
+                                    
+                                    <td>
+                                        @if ($imgs[$i] !== null)
+                                        <img src="{{asset('assets/images/studio/'.$imgs[$i++]->img)}}" alt="" srcset="" style="height: 200px; width: 200px; object-fit: contain"></td>
+                                        @else
+                                            
+                                        @endif
                                     <td class="text-center">Rp.
                                     {{number_format($td['harga_setting'],2,',','.')}}
                                     </td>

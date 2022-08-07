@@ -4,10 +4,10 @@
             <div class="row d-flex align-items-center" style="min-height: calc(100vh - 100px)">
                 <div class="col-12">
                     <div class="row  d-flex align-items-center">
-                        <div class="col-6">
-                            <img src="{{asset('assets/images/bg-login.jpg')}}" alt="" class="rounded" style="height: 50vh">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <img src="{{asset('assets/images/bg-login.jpg')}}" alt="" class="rounded" style="height: 50vh; width: 90%">
                         </div>
-                        <div class="col-6">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="row">
                                 <h1>Penyewaan Studio <br>
                                 Perum Produksi Film Negara

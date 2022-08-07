@@ -19,9 +19,10 @@
        
        <div class="row">
             <div class="table-responsive">
-                <table class="table table-striped align-middle">
+                <table class="table table-striped align-middle table-data">
                     <thead>
                         <tr>
+                            <th>Id Transaksi</th>
                             <th>Nama</th>
                             <th>Nama Perusahaan</th>
                             <th>No Hp</th>
@@ -48,6 +49,7 @@
                             }
                         @endphp  
                         <tr>
+                            <td>{{$tran->id}}</td>
                             <td>{{$tran->nama}}</td>
                             <td>{{$tran->nama_per}}</td>
                             <td>{{$tran->no_hp}}</td>
@@ -74,17 +76,17 @@
                             <td>
                                 @if (in_array(0, $lunas))
                                     @if  (in_array('pelunasan', $jenis))
-                                        <h6>Status : <span class="badge bg-danger">Menunggu Pelunasan</span> </h6>                                          
+                                        <h6> <span class="badge bg-danger">Menunggu Pelunasan</span> </h6>                                          
                                     @else
-                                        <h6>Status : <span class="badge bg-danger">Menunggu Pembayaran</span> </h6>
+                                        <h6> <span class="badge bg-danger">Menunggu Pembayaran</span> </h6>
                                     @endif
                                 @else
                                     @if ($tran->status_tran == "dibatalkan")
-                                    <h6>Status : <span class="badge bg-danger">Dibatalkan</span> </h6>                                          
+                                    <h6> <span class="badge bg-danger">Dibatalkan</span> </h6>                                          
                                     @elseif($tran->status_tran == "selesai")
-                                    <h6>Status : <span class="badge bg-success">Selesai</span> </h6>                                                                                  
+                                    <h6> <span class="badge bg-success">Selesai</span> </h6>                                                                                  
                                     @else
-                                    <h6>Status : <span class="badge bg-primary">Berlangsung</span> </h6>                                                                                                                      
+                                    <h6> <span class="badge bg-primary">Berlangsung</span> </h6>                                                                                                                      
                                     @endif
                                 @endif                            
                             </td>

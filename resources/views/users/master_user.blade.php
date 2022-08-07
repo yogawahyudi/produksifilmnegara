@@ -36,7 +36,7 @@
                 <div class="navbar-nav mx-lg-auto">
                     <a class="nav-link fw-bold me-3 ms-3 active" aria-current="page" href="{{route('dashboard')}}">Beranda</a>
                     <a class="nav-link fw-bold me-3 ms-3" href="{{route('user.studio')}}">Studio</a>
-                    <a class="nav-link fw-bold fs-1 me-3 ms-3" href="{{route('index.chatbot')}}" style="position: fixed;top: 590px;z-index: 999;right: 30px;"><i class="bx bx-bot bx-lg"></i></a>
+                    <a class="nav-link fw-bold fs-1 me-3 ms-3" href="{{route('index.chatbot')}}" style="position: fixed;top: 520px;z-index: 999;right: 30px;"><i class="bx bx-bot" style="font-size: 80px" ></i></a>
                 </div>
                 
                     @if (Auth::check())

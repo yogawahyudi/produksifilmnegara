@@ -91,9 +91,11 @@ class StudioController extends Controller
      */
     public function index()
     {
-        $studio = Studio::all();
-
-        return view('assets.pages.studio.index_studio', compact('studio', 'studio'));
+        $studio = Studio::with('studioImage')->get();
+        foreach ($studio as $st) {
+            $imgs[] = $st->studioImage->first();
+        }
+        return view('assets.pages.studio.index_studio', compact('studio', 'studio', 'imgs', 'imgs'));
     }
 
     public function index_user()

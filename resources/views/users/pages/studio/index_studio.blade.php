@@ -20,7 +20,7 @@
                                                             active
                                                             @endif
                                                             ">
-                                                            <img src="{{asset('assets/images/studio/'.$img->img)}}" class="d-block w-100" alt="...">
+                                                            <img src="{{asset('assets/images/studio/'.$img->img)}}" style="height: 100%; width: 100%; object-fit: cover" alt="..." >
                                                             </div>   
                                                             @empty                                                             
                                                             <div class="carousel-item active">

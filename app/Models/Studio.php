@@ -27,4 +27,9 @@ class Studio extends Model
     {
         return $this->hasMany(StudioImages::class, 'studio_id', 'id');
     }
+
+    public function studioImageFirst()
+    {
+        return $this->hasMany(StudioImages::class, 'studio_id', 'id')->take(1);
+    }
 }

@@ -19,7 +19,7 @@
        </div>
        <div class="row" id="s">
             <div class="table-responsive">
-                <table class="table table-striped align-middle">
+                <table class="table table-striped align-middle table-data">
                     <thead>
                         <tr>
                             <th>Nama</th>
@@ -28,6 +28,7 @@
                             <th>Tanggal Pembayaran</th>
                             <th>Jenis Tagihan</th>
                             <th>Verified</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +62,7 @@
        </div>
         <div class="row d-none" id="bk">
             <div class="table-responsive">
-                <table class="table table-striped align-middle">
+                <table class="table table-striped align-middle table-data">
                     <thead>
                         <tr>
                             <th>Nama</th>
@@ -93,8 +94,9 @@
                             @endif
                             <td>
                                 <button class="btn btn-link" data-bs-target="#verifPembayaran{{$pem->id}}" data-bs-toggle="modal">
-                                    <i class="bx bx-show-alt bx-fw text-primary"></i></td>
+                                    <i class="bx bx-show-alt bx-fw text-primary"></i>
                                 </button>
+                            </td>
                         </tr>
                         @else
                             
@@ -109,71 +111,132 @@
     </div>
                         @forelse ($pembayaran as $pem)
                         @if ($pem->verified == 0)
-                        <div class="modal fade" id="verifPembayaran{{$pem->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembayaran</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{{route('verif.assets.pembayaran' , $pem->id)}}" method="post">
-                                    @csrf
-                                    <div class="modal-body">
-                                        <div class="container-fluid">
-                                            <div class="row mb-3 d-flex justify-content-center">
-                                                <div class="col-10">
-                                                    <div class="row mb-3">
-                                                        <div class="text-center">
-                                                            <img class="d-block w-100 mb-3" src="{{asset('assets/images/bukti-transfer/'.$pem->bukti_img)}}" alt="Bukti Transfer">'
+                            <div class="modal fade" id="verifPembayaran{{$pem->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembayaran</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{route('verif.assets.pembayaran' , $pem->id)}}" method="post">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="container-fluid">
+                                                <div class="row mb-3 d-flex justify-content-center">
+                                                    <div class="col-10">
+                                                        <div class="row mb-3">
+                                                            <div class="text-center">
+                                                                <img class="d-block w-100 mb-3" src="{{asset('assets/images/bukti-transfer/'.$pem->bukti_img)}}" alt="Bukti Transfer">'
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <table class="table table-striped">
-                                                            <tr>
-                                                                <td colspan="2" class="text-center">ID Transaksi</td>
-                                                                <td colspan="2" class="text-center">{{$pem->tagihan->transaksi->id}}</td>
-                                                            </tr>
-                                                            <tr>                                                                
-                                                                <td colspan="2" class="text-center">ID Tagihan</td>
-                                                                <td colspan="2" class="text-center">{{$pem->tagihan->id}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" class="text-center">ID Pembayaran</td>
-                                                                <td colspan="2" class="text-center">{{$pem->id}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Jenis Tagihan</td>
-                                                                <td class="text-center">{{$pem->tagihan->jenis}}</td>
-                                                                <td class="text-center">Tanggal Pembayaran</td>
-                                                                <td class="text-center">{{$pem->created_at}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Nama</td>
-                                                                <td class="text-center">{{$pem->tagihan->transaksi->nama}}</td>
-                                                                <td class="text-center">No Hp</td>
-                                                                <td class="text-center">{{$pem->tagihan->transaksi->no_hp}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Nominal</td>
-                                                                <td class="text-center" colspan="3">Rp.  {{number_format($pem->nominal,2,',','.')}}</td>
-                                                            </tr>
-                                                        </table>
-                                                        <span class="text-danger">* Pastikan Nominal sudah sesuai dengan yang ada di bukti Transfer</span>
+                                                        <div class="row">
+                                                            <table class="table table-striped">
+                                                                <tr>
+                                                                    <td colspan="2" class="text-center">ID Transaksi</td>
+                                                                    <td colspan="2" class="text-center">{{$pem->tagihan->transaksi->id}}</td>
+                                                                </tr>
+                                                                <tr>                                                                
+                                                                    <td colspan="2" class="text-center">ID Tagihan</td>
+                                                                    <td colspan="2" class="text-center">{{$pem->tagihan->id}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-center">ID Pembayaran</td>
+                                                                    <td colspan="2" class="text-center">{{$pem->id}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Jenis Tagihan</td>
+                                                                    <td class="text-center">{{$pem->tagihan->jenis}}</td>
+                                                                    <td class="text-center">Tanggal Pembayaran</td>
+                                                                    <td class="text-center">{{$pem->created_at}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Nama</td>
+                                                                    <td class="text-center">{{$pem->tagihan->transaksi->nama}}</td>
+                                                                    <td class="text-center">No Hp</td>
+                                                                    <td class="text-center">{{$pem->tagihan->transaksi->no_hp}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Nominal</td>
+                                                                    <td class="text-center" colspan="3">Rp.  {{number_format($pem->nominal,2,',','.')}}</td>
+                                                                </tr>
+                                                            </table>
+                                                            <span class="text-danger">* Pastikan Nominal sudah sesuai dengan yang ada di bukti Transfer</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" >Verifikasi</button> 
+                                        </div>
+                                    </form>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" >Verifikasi</button> 
-                                    </div>
-                                </form>
                                 </div>
                             </div>
-                        </div>
                         @else
-                            
+                            <div class="modal fade" id="verifPembayaran{{$pem->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembayaran</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{route('verif.assets.pembayaran' , $pem->id)}}" method="post">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="container-fluid">
+                                                <div class="row mb-3 d-flex justify-content-center">
+                                                    <div class="col-10">
+                                                        <div class="row mb-3">
+                                                            <div class="text-center">
+                                                                <img class="d-block w-100 mb-3" src="{{asset('assets/images/bukti-transfer/'.$pem->bukti_img)}}" alt="Bukti Transfer">'
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <table class="table table-striped">
+                                                                <tr>
+                                                                    <td colspan="2" class="text-center">ID Transaksi</td>
+                                                                    <td colspan="2" class="text-center">{{$pem->tagihan->transaksi->id}}</td>
+                                                                </tr>
+                                                                <tr>                                                                
+                                                                    <td colspan="2" class="text-center">ID Tagihan</td>
+                                                                    <td colspan="2" class="text-center">{{$pem->tagihan->id}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-center">ID Pembayaran</td>
+                                                                    <td colspan="2" class="text-center">{{$pem->id}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Jenis Tagihan</td>
+                                                                    <td class="text-center">{{$pem->tagihan->jenis}}</td>
+                                                                    <td class="text-center">Tanggal Pembayaran</td>
+                                                                    <td class="text-center">{{$pem->created_at}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Nama</td>
+                                                                    <td class="text-center">{{$pem->tagihan->transaksi->nama}}</td>
+                                                                    <td class="text-center">No Hp</td>
+                                                                    <td class="text-center">{{$pem->tagihan->transaksi->no_hp}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Nominal</td>
+                                                                    <td class="text-center" colspan="3">Rp.  {{number_format($pem->nominal,2,',','.')}}</td>
+                                                                </tr>
+                                                            </table>
+                                                            <span class="text-danger">* Pastikan Nominal sudah sesuai dengan yang ada di bukti Transfer</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                         @empty
                         @endforelse

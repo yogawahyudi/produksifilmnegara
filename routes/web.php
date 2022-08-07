@@ -9,10 +9,12 @@ use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\NBCController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResponController;
 use App\Http\Controllers\StudioController;
 use App\Http\Controllers\TextProcessingController;
@@ -124,7 +126,15 @@ Route::prefix('manager/dashboard')->group(function () {
     Route::get('/data-penyewa', [ManagerController::class, 'dataPenyewa'])->name('index.dataPenyewa.manager')->middleware(['manager', 'manager.verified']);
     Route::get('/transaksi', [TransaksiController::class, 'indexMangerTransaksi'])->name('index.manager.transaksi')->middleware(['manager', 'manager.verified']);
     Route::get('/transaksi/{id}', [TransaksiController::class, 'viewTransaksiManager'])->name('view.manager.transaksi')->middleware(['manager', 'manager.verified']);
+
+    Route::get('/report', [ReportController::class, 'index'])->name('index.report')->middleware(['manager', 'manager.verified']);
+    Route::get('/report/{id}', [ReportController::class, 'report'])->name('get.report')->middleware(['manager']);
+    Route::post('/report/period', [ReportController::class, 'customPeriod'])->name('custom.report')->middleware(['manager']);
 });
+
+
+
+
 
 
 Route::get('/', function () {
@@ -156,6 +166,10 @@ Route::post('/chatbot/bm', [BoyerMooreController::class, 'hasilBooyerMore'])->na
 
 Route::get('/setWebhook', [BOTTelegramController::class, 'setWebhook']);
 Route::post('/{token}/webhook', [BOTTelegramController::class, 'commandHandlerWebhook']);
+
+Route::prefix('nbc')->group(function () {
+    Route::get('training', [NBCController::class, 'testing']);
+});
 
 
 require __DIR__ . '/auth.php';
