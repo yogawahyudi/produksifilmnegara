@@ -117,6 +117,23 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'admin' => [
+            'provider' => 'admin',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'assets' => [
+            'provider' => 'assets',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ], 'manager' => [
+            'provider' => 'manager',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
 
     /*

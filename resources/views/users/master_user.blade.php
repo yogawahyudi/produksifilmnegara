@@ -36,7 +36,7 @@
                 <div class="navbar-nav mx-lg-auto">
                     <a class="nav-link fw-bold me-3 ms-3 active" aria-current="page" href="{{route('dashboard')}}">Beranda</a>
                     <a class="nav-link fw-bold me-3 ms-3" href="{{route('user.studio')}}">Studio</a>
-                    <a class="nav-link fw-bold fs-1 me-3 ms-3" href="{{route('index.chatbot')}}" style="position: fixed;top: 520px;z-index: 999;right: 30px;"><i class="bx bx-bot" style="font-size: 80px" ></i></a>
+                    {{-- <a class="nav-link fw-bold fs-1 me-3 ms-3" href="{{route('index.chatbot')}}" style="position: fixed;top: 520px;z-index: 999;right: 30px;"><i class="bx bx-bot" style="font-size: 80px" ></i></a> --}}
                 </div>
                 
                     @if (Auth::check())
@@ -87,6 +87,7 @@
     <div class="container-fluid">
 @yield('content')
     </div>
+    @include('users.pages.chatbot.chatbot2')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
     <script src="{{asset('/dist/js/formatRupiah.js')}}"></script>

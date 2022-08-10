@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\Transaksi_items;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ReportController extends Controller
 {
@@ -42,6 +44,7 @@ class ReportController extends Controller
             }
 
             for ($i = count($data) - 1; $i >= 0; $i--) {
+                $detailTransaksi = Transaksi::with('transaksi_items')->where('tanggal', '>', $starDate . '%')->get();
                 $datas[] = [
                     'date' => $data[$i],
                     'transaksi' => DB::table('transaksi')->where('tanggal', '=', $dateq[$i])->count(),
@@ -56,6 +59,7 @@ class ReportController extends Controller
                 'totalPendapatan' => DB::table('tagihan')->where('created_at', '>', $starDate)->where('lunas', '=', 1)->sum('nominal'),
                 'totalUser' => DB::table('users')->count(),
                 'totalUserBaru' => DB::table('users')->where('created_at', '>', $starDate)->count(),
+                'detailTransaksi' => $detailTransaksi
 
             ];
             return json_encode($result);
@@ -68,6 +72,7 @@ class ReportController extends Controller
             }
 
             for ($i = count($data) - 1; $i >= 0; $i--) {
+                $detailTransaksi = Transaksi::with('transaksi_items')->where('tanggal', '>', $starDate)->get();
                 $datas[] = [
                     'date' => $data[$i],
                     'transaksi' => DB::table('transaksi')->where('tanggal', '=', $yearNow . '-' . $dateq[$i])->count(),
@@ -83,6 +88,7 @@ class ReportController extends Controller
                 'totalPendapatan' => DB::table('tagihan')->where('created_at', '>', $starDate)->where('lunas', '=', 1)->sum('nominal'),
                 'totalUser' => DB::table('users')->count(),
                 'totalUserBaru' => DB::table('users')->where('created_at', '>', $starDate)->count(),
+                'detailTransaksi' => $detailTransaksi
 
             ];
             return json_encode($result);
@@ -94,6 +100,8 @@ class ReportController extends Controller
             }
 
             for ($i = count($data) - 1; $i >= 0; $i--) {
+                $detailTransaksi = Transaksi::with('transaksi_items')->where('tanggal', '>', $starDate)->get();
+
                 $datas[] = [
                     'date' => $data[$i],
                     'transaksi' => DB::table('transaksi')->where('tanggal', 'LIKE', $dateq[$i] . '%')->count(),
@@ -108,6 +116,9 @@ class ReportController extends Controller
                     'totalPendapatan' => DB::table('tagihan')->where('created_at', '>', $starDate)->where('lunas', '=', 1)->sum('nominal'),
                     'totalUser' => DB::table('users')->count(),
                     'totalUserBaru' => DB::table('users')->where('created_at', '>', $starDate)->count(),
+                    'detailTransaksi' => $detailTransaksi
+
+
 
                 ];
             }
@@ -119,6 +130,8 @@ class ReportController extends Controller
     {
         $starDate  = Carbon::parse($request['start']);
         $endDate =  Carbon::parse($request['end']);
+        $starDates = date($request['start']);
+        $endDates = date($request['end']);
 
         $data = array();
         $dateq = array();
@@ -126,7 +139,7 @@ class ReportController extends Controller
             array_push($dateq, $i->format('Y/m/d'));
             array_push($data, $i->format('d/m/y'));
         }
-
+        $detailTransaksi = Transaksi::with('transaksi_items')->whereBetween('tanggal', [$starDates, $endDates])->get();
         for ($i = count($data) - 1; $i >= 0; $i--) {
             $datas[] = [
                 'date' => $data[$i],
@@ -135,15 +148,32 @@ class ReportController extends Controller
         }
         $result = [
             'title' => 'Laporan Transaksi',
-            'subtitle' => 'Periode ' . Carbon::parse($request['start'])->isoFormat('DD-MMMM-YYYY') . ' - ' . Carbon::parse($request['start'])->isoFormat('DD-MMMM-YYYY'),
+            'subtitle' => 'Periode ' . Carbon::parse($request['start'])->isoFormat('DD-MMMM-YYYY') . ' - ' . Carbon::parse($request['end'])->isoFormat('DD-MMMM-YYYY'),
             'data' => $datas,
             'totalTransaksi' => DB::table('transaksi')->where('tanggal', '>', $starDate)->count(),
             'transaksiDibatalkan' => DB::table('transaksi')->where('tanggal', '>', $starDate)->where('status_tran', 'dibatalkan')->count(),
             'totalPendapatan' => DB::table('tagihan')->where('created_at', '>', $starDate)->where('lunas', '=', 1)->sum('nominal'),
             'totalUser' => DB::table('users')->count(),
             'totalUserBaru' => DB::table('users')->where('created_at', '>', $starDate)->count(),
-
+            'detailTransaksi' => $detailTransaksi
         ];
         return json_encode($result);
+    }
+
+    public function pdf(Request $request)
+    {
+        $report = new ReportController;
+
+        if ($request['id']) {
+            $id = $request['id'];
+            $period = $report->report($id);
+            $data = array(json_decode($period, true));
+        } else {
+            $custom =  $report->customPeriod($request);
+            $data = array(json_decode($custom, true));
+        }
+        $pdf = Pdf::loadView('manager.pages.report.report_pdf', compact('data'));
+        return $pdf->stream('laporan-transaksi.pdf');
+        // return view('manager.pages.report.report_pdf', compact('data'));
     }
 }

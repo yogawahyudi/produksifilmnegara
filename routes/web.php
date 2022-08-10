@@ -6,6 +6,7 @@ use App\Http\Controllers\BOTTelegramController;
 use App\Http\Controllers\BoyerMooreController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\emailController;
 use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManagerController;
@@ -130,6 +131,7 @@ Route::prefix('manager/dashboard')->group(function () {
     Route::get('/report', [ReportController::class, 'index'])->name('index.report')->middleware(['manager', 'manager.verified']);
     Route::get('/report/{id}', [ReportController::class, 'report'])->name('get.report')->middleware(['manager']);
     Route::post('/report/period', [ReportController::class, 'customPeriod'])->name('custom.report')->middleware(['manager']);
+    Route::post('/report/pdf', [ReportController::class, 'pdf'])->name('pdf.report')->middleware(['manager', 'manager.verified']);
 });
 
 
@@ -166,6 +168,7 @@ Route::post('/chatbot/bm', [BoyerMooreController::class, 'hasilBooyerMore'])->na
 
 Route::get('/setWebhook', [BOTTelegramController::class, 'setWebhook']);
 Route::post('/{token}/webhook', [BOTTelegramController::class, 'commandHandlerWebhook']);
+Route::get('send-mail', [emailController::class, 'index']);
 
 Route::prefix('nbc')->group(function () {
     Route::get('training', [NBCController::class, 'testing']);

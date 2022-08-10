@@ -1,22 +1,25 @@
        @extends('users.master_user')
        
         @section('content')
-        <div class="row d-flex justify-content-center mt-3">
-            <div class="col-md-10 col-lg-10 col-sm-12">
-                <div class="card">
-                    <div class="card-body" style="background-color: #f8f9fa;">
-                        <div class="row">
-                            <div class="col-12" style="height: calc(100vh - 200px); overflow:hidden">
-                                <div class="message-container" id="buble" style="height: 100%; overflow-y:scroll; overflow-x:hidden; margin-right: -50px;">
-                                    
+        @include('users.pages.chatbot.chatbot2')
+        <div class="col">
+            <div class="row d-flex justify-content-center mt-3">
+                <div class="col-md-10 col-lg-10 col-sm-12">
+                    <div class="card">
+                        <div class="card-body" style="background-color: #f8f9fa;">
+                            <div class="row">
+                                <div class="col-12" style="height: calc(100vh - 200px); overflow:hidden">
+                                    <div class="message-container" id="buble" style="height: 100%; overflow-y:scroll; overflow-x:hidden; margin-right: -50px;">
+                                        
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row d-flex border-top" id="inputrow">
-                            <div class="col-12">
-                                <div class="input-group mt-3">
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" name="input" placeholder="Type Your Message">
-                                    <button class="btn btn-outline-primary" type="button" id="send"><i class='bx bxs-send'></i></button>
+                            <div class="row d-flex border-top" id="inputrow">
+                                <div class="col-12">
+                                    <div class="input-group mt-3">
+                                        <input type="text" class="form-control" id="exampleFormControlInput1" name="input" placeholder="Type Your Message">
+                                        <button class="btn btn-outline-primary" type="button" id="send"><i class='bx bxs-send'></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +115,7 @@
                     error: (data)=>{
                         console.log(data);
                     }
-                })
+                    })
                 }
             }
         })
