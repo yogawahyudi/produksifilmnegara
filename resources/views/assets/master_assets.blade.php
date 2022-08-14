@@ -157,6 +157,9 @@
                                 href="{{route('index.bot.assets')}}" aria-expanded="false"><i class="bx bx-bot"></i><span
                                     class="hide-menu">BOT Testing</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="{{route('nbc.view')}}" aria-expanded="false"><i class='bx bx-test-tube'></i><span
+                                    class="hide-menu">NBC Testing</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="{{route('index.transaksi')}}" aria-expanded="false"><i class="bx bx-spreadsheet"></i><span
                                     class="hide-menu">Transaksi</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
