@@ -132,16 +132,16 @@
                             <div id="carouselExampleInterval " class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner rounded shadow-lg">
                                     <div class="carousel-item active" data-bs-interval="1500">
-                                    <img src="{{asset('assets/images/IMG_4493.jpg')}}" class="d-block w-100" alt="...">
+                                    <img src="{{asset('assets/images/IMG_4493.JPG')}}" class="d-block w-100" alt="...">
                                     </div>
                                     <div class="carousel-item" data-bs-interval="1500">
-                                    <img src="{{asset('assets/images/IMG_4466.jpg')}}" class="d-block w-100" alt="...">
+                                    <img src="{{asset('assets/images/IMG_4466.JPG')}}" class="d-block w-100" alt="...">
                                     </div>
                                     <div class="carousel-item" data-bs-interval="1500">
-                                    <img src="{{asset('assets/images/IMG_4558.jpg')}}" class="d-block w-100" alt="...">
+                                    <img src="{{asset('assets/images/IMG_4558.JPG')}}" class="d-block w-100" alt="...">
                                     </div>
                                     <div class="carousel-item" data-bs-interval="1500">
-                                    <img src="{{asset('assets/images/IMG_4566.jpg')}}" class="d-block w-100" alt="...">
+                                    <img src="{{asset('assets/images/IMG_4566.JPG')}}" class="d-block w-100" alt="...">
                                     </div>
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
