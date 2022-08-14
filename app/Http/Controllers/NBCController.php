@@ -44,6 +44,13 @@ class NBCController extends Controller
 
     public $dwordclass;
 
+    public $allClassData;
+    public $allWordsCount;
+    public $testClass;
+    public $result;
+    public $match;
+
+
     /**
      * Set available class or target.
      * 
@@ -171,6 +178,10 @@ class NBCController extends Controller
                 return ($item['count'] !== 0);
             }));
 
+            $this->allWordsCount[] = count(array_filter($this->wordsClass[$index]['words'], function ($item) {
+                return ($item['count'] !== 0);
+            }));
+
             foreach ($this->wordsClass[$index]['words'] as $word) {
                 $this->wordsClass[$index]['computed'][] = [
                     'word' => $word['word'],
@@ -178,9 +189,9 @@ class NBCController extends Controller
                 ];
             }
         }
-        $bagWord = $this->words;
         $countClassData = count($classData);
         $countData = count($data);
+        $this->allClassData = $allClassData;
     }
 
     /**
@@ -199,19 +210,25 @@ class NBCController extends Controller
         $testClass = [];
         foreach ($this->class as $class) {
             $index = $this->findWordsClassIndex($class);
+            $arrindex[] = $this->findWordsClassIndex($class);
+            // dd($index);
             foreach ($wordsArray as $word) {
+                // kalo ga da maka hasilnya undenfined
                 $match = array_filter($this->wordsClass[$index]['computed'], function ($item) use ($word) {
                     return ($item['word'] === $word);
                 });
-
+                $arrmatch[] = array_filter($this->wordsClass[$index]['computed'], function ($item) use ($word) {
+                    return ($item['word'] === $word);
+                });
+                $this->match = $arrmatch;
                 if ($match) {
                     $testClass[$class]['computed'][] = reset($match)['value'];
                 }
             }
-
+            $arrmatch = [];
             $testClass[$class]['result'] = 1; // init the result for the class
         }
-
+        // dd($arrmatch);
         foreach ($testClass as $key => $value) {
             foreach ($value['computed'] as $val) {
                 $testClass[$key]['result'] *= $val;
@@ -222,12 +239,12 @@ class NBCController extends Controller
         foreach ($this->class as $class) {
             $result[] = $testClass[$class]['result'];
         }
-
+        $this->testClass = $testClass;
+        $this->result = $result;
         $max = max($result);
         foreach ($testClass as $key => $item) {
             if ($item['result'] === $max) return $key;
         }
-
         return false;
     }
 
@@ -249,7 +266,44 @@ class NBCController extends Controller
         $nb->setClass(array_unique($label));
         // proses training
         $nb->training($data);
-        dd($nb->displaysetWordsClass());
+        $res = json_encode($nb->displaysetWordsClass());
+        return $res;
+    }
+
+    public function view(Request $request)
+    {
+        if ($request['input'] == null) {
+            $text = "berapa harga studio 1";
+        } else {
+            $text = $request['input'];
+        }
+        $knowledge = Pertanyaan::all();
+
+        foreach ($knowledge as $kn) {
+            $data[] = [
+                'text' => $kn['pertanyaan'],
+                'class' => $kn['label']
+            ];
+
+            $label[] = $kn['label'];
+        }
+        $nb = new NBCController();
+
+        // mendefinisikan class target sesuai dengan yang ada pada data training.
+        $nb->setClass(array_unique($label));
+        // proses training
+        $nb->training($data);
+        $res = $nb->displaysetWordsClass();
+        $allClassData = $nb->getAllClasData();
+        $data = $nb->getData();
+        $wordsCount[] = $nb->getAllWordsCount();
+        $words = $nb->getWords();
+
+        $resultClass = $nb->predict($text);
+        $testClass = $nb->getTestClass();
+        $result = $nb->getResult();
+        $match = $nb->getMatch();
+        return view('assets.pages.nbc.testing', compact(['res', 'allClassData', 'data', 'wordsCount', 'words', 'testClass', 'result', 'match']));
     }
 
     public function displaysetClass()
@@ -260,5 +314,33 @@ class NBCController extends Controller
     protected function displaysetWordsClass()
     {
         return $this->wordsClass;
+    }
+    protected function getAllClasData()
+    {
+        return $this->allClassData;
+    }
+    protected function getData()
+    {
+        return $this->data;
+    }
+    protected function getAllWordsCount()
+    {
+        return $this->allWordsCount;
+    }
+    protected function getWords()
+    {
+        return $this->words;
+    }
+    protected function getTestClass()
+    {
+        return $this->testClass;
+    }
+    protected function getResult()
+    {
+        return $this->result;
+    }
+    protected function getMatch()
+    {
+        return $this->match;
     }
 }

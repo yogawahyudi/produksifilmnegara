@@ -59,6 +59,10 @@ Route::prefix('admin/dashboard')->group(function () {
 
 
 Route::prefix('assets/dashboard')->group(function () {
+    Route::prefix('nbc')->group(function () {
+        Route::get('view', [NBCController::class, 'view'])->name('nbc.view')->middleware(['assets', 'assets.verified']);
+    });
+
     Route::get('/register', [AssetsController::class, 'AssetsRegister'])->name('assets.register');
     // Route::post('/logout', [AssetsController::class, 'AssetsLogout'])->name('assets.logout');
     Route::post('/register/create', [AssetsController::class, 'AssetsRegisterStore'])->name('assets.register.store');
@@ -152,6 +156,8 @@ Route::post('/transaksi/store/{id}', [TransaksiController::class, 'storeTransaks
 
 Route::post('/tagihan/{id}/payments', [PembayaranController::class, 'userStore'])->name('store.pembayaran.user')->middleware(['auth', 'verified']);
 
+Route::get('/inv', [TransaksiController::class,  'viewInvoice'])->name('view.invoice');
+
 Route::get('/profile', [ProfileController::class, 'indexProfile'])->name('index.profile')->middleware(['auth', 'verified']);
 Route::post('/profile/{id}/update-img', [ProfileController::class, 'updateImagesUser'])->name('update.images.user')->middleware(['auth', 'verified']);
 Route::post('/profile/{id}/update-profile', [ProfileController::class, 'updateProfileUser'])->name('update.profile.user')->middleware(['auth', 'verified']);
@@ -168,11 +174,8 @@ Route::post('/chatbot/bm', [BoyerMooreController::class, 'hasilBooyerMore'])->na
 
 Route::get('/setWebhook', [BOTTelegramController::class, 'setWebhook']);
 Route::post('/{token}/webhook', [BOTTelegramController::class, 'commandHandlerWebhook']);
-Route::get('send-mail', [emailController::class, 'index']);
+Route::get('send-mail', [emailController::class, 'sendInvoice']);
 
-Route::prefix('nbc')->group(function () {
-    Route::get('training', [NBCController::class, 'testing']);
-});
 
 
 require __DIR__ . '/auth.php';
