@@ -74,16 +74,16 @@
                                 </ul>
                             </td>                            
                             <td>
-                                @if (in_array(0, $lunas))
+                                @if ($tran->status_tran == "dibatalkan")
+                                <h6> <span class="badge bg-danger">Dibatalkan</span> </h6>                                          
+                                @elseif (in_array(0, $lunas))
                                     @if  (in_array('pelunasan', $jenis))
                                         <h6> <span class="badge bg-danger">Menunggu Pelunasan</span> </h6>                                          
                                     @else
                                         <h6> <span class="badge bg-danger">Menunggu Pembayaran</span> </h6>
                                     @endif
                                 @else
-                                    @if ($tran->status_tran == "dibatalkan")
-                                    <h6> <span class="badge bg-danger">Dibatalkan</span> </h6>                                          
-                                    @elseif($tran->status_tran == "selesai")
+                                    @if($tran->status_tran == "selesai")
                                     <h6> <span class="badge bg-success">Selesai</span> </h6>                                                                                  
                                     @else
                                     <h6> <span class="badge bg-primary">Berlangsung</span> </h6>                                                                                                                      

@@ -30,4 +30,9 @@ class Transaksi_items extends Model
     {
         return $this->belongsTo(Transaksi::class, 'transaksi_id', 'id');
     }
+
+    function scopeLatest($query)
+    {
+        return $query->orderBy('created_at')->get();
+    }
 }

@@ -423,6 +423,44 @@
       }
     }
     
+    
+       table.minimalistBlack {
+        border: 1px solid #eee;
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+        border-collapse: collapse;
+      }
+      table.minimalistBlack td, table.minimalistBlack th {
+        border: 1px solid #000000;
+        padding: 5px 4px;
+      }
+      table.minimalistBlack tbody td {
+        font-size: 13px;
+      }
+      table.minimalistBlack thead {
+        background: #CFCFCF;
+        background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+        background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+        background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+        border-bottom: 3px solid #000000;
+      }
+      table.minimalistBlack thead th {
+        font-size: 15px;
+        font-weight: bold;
+        color: #000000;
+        text-align: center;
+      }
+      table.minimalistBlack tfoot {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+        border-top: 3px solid #000000;
+      }
+      table.minimalistBlack tfoot td {
+        font-size: 14px;
+      }
+
     :root {
       color-scheme: light dark;
       supported-color-schemes: light dark;
@@ -458,7 +496,7 @@
                     <td class="content-cell">
                       <div class="f-fallback">
                         <h1>Hi {{$mailData['name']}},</h1>
-                        <p>Terima kasih atas kepercayaan kamu bertransaksi di <a href="{{env("APP_URL")}}">Studio Produksi Film Negara</a> Berikut adalah rincian informasi tagihan untuk Transaksi {{$mailData['idTransaksi']}}.</p>
+                        <p>Pembayaran untuk tagihan  telah kami terima, kami akan segera memeverifikasi permbayaranmu. Terima kasih telah bertransaksi di <a href="{{env("APP_URL")}}">Studio Produksi Film Negara</a> Berikut adalah rincian informasi tagihan untuk Transaksi {{$mailData['idTransaksi']}}.</p>
                         <table class="attributes" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td class="attributes_content">
@@ -487,8 +525,49 @@
                                 <tr>
                                   <td class="attributes_item">
                                     <span class="f-fallback">
-              {{-- <strong>Due By:</strong> due_date --}}
-            </span>
+                                    {{-- <strong>Due By:</strong> due_date --}}
+                                    </span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                            <tr>
+                            <td class="attributes_content">
+                              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                  <td class="attributes_item">
+                                     <span class="f-fallback">
+                                      <strong>ID Pembayaran : </strong> {{$mailData['pembayaran']['id']}}
+                                    </span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="attributes_item">
+                                     <span class="f-fallback">
+                                      <strong>Tanggal : </strong> {{$mailData['pembayaran']['created_at']}}
+                                    </span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="attributes_item">
+                                     <span class="f-fallback">
+                                      <strong>Jenis Tagihan : </strong> {{$mailData['tagihan']['jenis']}}
+                                    </span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="attributes_item">
+                                    <span class="f-fallback">
+                                      <strong>Nominal Tagihan : </strong> {{$mailData['tagihan']['nominal']}}
+                                    </span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="attributes_item">
+                                    <span class="f-fallback">
+                                    {{-- <strong>Due By:</strong> due_date --}}
+                                    </span>
                                   </td>
                                 </tr>
                               </table>
@@ -504,32 +583,32 @@
                               <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td align="center">
-                                    <a href="{{route('view.transaksi.user', $mailData['idTransaksi'])}}" class="f-fallback button button--green" target="_blank">Bayar Tagihan</a>
+                                    <button class="f-fallback button button--green" target="_blank">Lihat Status Pembayaran</button>
                                   </td>
                                 </tr>
                               </table>
                             </td>
                           </tr>
                         </table>
-                        <table class="purchase" width="100%" cellpadding="0" cellspacing="0">
+                        <table width="100%" cellpadding="0" cellspacing="0">
                           <tr>
                             <td>
-                              <h3>Transaksi id : {{$mailData['idTransaksi']}}</h3>
+                              <h6>Transaksi id : {{$mailData['idTransaksi']}}</h6>
                             </td>
                           </tr>
                           <tr>
                             <td>
-                              <h3 class="align-left">Tanggal : {{{$mailData['tanggal']}}}</h3>
+                              <h6 class="align-left">Tanggal : {{$mailData['tanggal']}}</h6>
                             </td>
                           </tr>
                           <tr>
                             <td>
-                              <h3 class="align-left">Rincian Pesanan</h3>
+                              <h6 class="align-left">Rincian Pesanan</h6>
                             </td>
                           </tr>
                           <tr>
                             <td colspan="2">
-                              <table class="purchase_content" width="100%" cellpadding="0" cellspacing="0">
+                              <table class="minimalistBlack" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <th align="left" class="purchase_heading">
                                     {{-- <p class="f-fallback">Rincian Pesanan</p> --}}
@@ -539,9 +618,13 @@
                                     {{-- <p class="f-fallback">Rincian Pesanan</p> --}}
                                     Tanggal
                                   </th>
-                                  <th align="left" colspan="2" class="purchase_heading">
+                                  <th align="left" class="purchase_heading">
                                     {{-- <p class="f-fallback">Rincian Pesanan</p> --}}
                                     Deskripsi
+                                  </th>
+                                   <th align="left"class="purchase_heading">
+                                    {{-- <p class="f-fallback">Rincian Pesanan</p> --}}
+                                    Biaya
                                   </th>
                                   {{-- <th class="purchase_heading"">
                                     <p class="f-fallback">Amount</p>
@@ -549,24 +632,75 @@
                                 </tr>
                                 {{-- {{#each invoice_details}} --}}
                                 <tr>
-                                  <td rowspan="2" class="purchase_item" align="left"><span class="f-fallback">{{$mailData['transaksi_items']['studio']}}</span></td>
-                                  <td rowspan="2" class="purchase_item" align="left"><span class="f-fallback">{{$mailData['transaksi_items']['tanggal']}}</span></td>                                
-                                  <td class="purchase_item" width="25%" align="left"><span class="f-fallback">{{$mailData['transaksi_items']['durasi_shooting']}}</span></td>
-                                  <td class="purchase_item" align="left"><span class="f-fallback">Rp. {{number_format($mailData['b_shooting'],2,',','.')}}</span></td>
+                                  <td rowspan="2" class="purchase_item" align="center"><span class="f-fallback">{{$mailData['transaksi_items'][0]->studio}}</span></td>
+                                  <td rowspan="2" class="purchase_item" align="center"><span class="f-fallback">{{$mailData['transaksi_items'][0]->tanggal}}</span></td>                                
+                                  <td class="purchase_item" width="25%" align="center"><span class="f-fallback">
+                                    Shooting :  {{($mailData['transaksi_items'][0]->durasi_shooting - ($mailData['transaksi_items'][0]->durasi_shooting % 12)) / 12 }} (per 12 jam) <br>
+                                    overcharge Shooting :  {{$mailData['transaksi_items'][0]->durasi_shooting % 12 }} Jam <br>                                    
+                                  </span></td>
+                                  <td class="purchase_item" align="center"><span class="f-fallback">
+                                      Rp. {{number_format($mailData['transaksi_items'][0]->harga_shooting ,2,',','.')}} <br>
+                                      Rp. {{number_format($mailData['transaksi_items'][0]->overcharge_shooting ,2,',','.')}}
+                                  </span></td>
                                 </tr>
                                 <tr>
-                                  <td class="purchase_item" width="25%" align="left"><span class="f-fallback">{{$mailData['transaksi_items']['durasi_setting']}}</span></td>
-                                    <td class="purchase_item" align="left"><span class="f-fallback">Rp. {{number_format($mailData['b_setting'],2,',','.')}}</span></td>
+                                  <td class="purchase_item" width="25%" align="center"><span class="f-fallback">
+                                    Setting : {{ ($mailData['transaksi_items'][0]->durasi_setting - ($mailData['transaksi_items'][0]->durasi_setting % 12)) / 12 }} (per 12 jam) <br>
+                                    overcharge Setting : {{$mailData['transaksi_items'][0]->durasi_setting / 12}} Jam                                    
+                                  </span></td>
+                                    <td class="purchase_item" align="center"><span class="f-fallback">
+                                      Rp. {{number_format($mailData['transaksi_items'][0]->harga_setting ,2,',','.')}} <br>
+                                      Rp. {{number_format($mailData['transaksi_items'][0]->overcharge_setting ,2,',','.')}}
+                                    </span></td>
                                 </tr>
                                 {{-- {{/each}} --}}
                                 <tr>
                                   <td colspan="3" class="purchase_footer">
-                                    <p align="left" class="f-fallback purchase_total purchase_total--label">Total</p>
+                                    <p align="center" class="f-fallback purchase_total purchase_total--label">Total</p>
                                   </td>
                                   <td class="purchase_footer">
-                                    <p align="left" class="f-fallback purchase_total">Rp. {{number_format($mailData['transaksi_items']['t_harga'],2,',','.')}}</p>
+                                    <p align="center" class="f-fallback purchase_total">Rp. {{number_format($mailData['transaksi_items'][0]->t_harga,2,',','.')}}</p>
                                   </td>
                                 </tr>
+                                @if (count($mailData['transaksi_items']) > 1)
+                                    <tr colspan="4">
+                                        <td>Additional</td>
+                                    </tr>
+                                <tr>
+                                  <td rowspan="2" class="purchase_item" align="center"><span class="f-fallback">{{$mailData['transaksi_items'][1]->studio}}</span></td>
+                                  <td rowspan="2" class="purchase_item" align="center"><span class="f-fallback">{{$mailData['transaksi_items'][1]->tanggal}}</span></td>                                
+                                  <td class="purchase_item" width="25%" align="center"><span class="f-fallback">
+                                    Shooting :  {{($mailData['transaksi_items'][1]->durasi_shooting - ($mailData['transaksi_items'][1]->durasi_shooting % 12)) / 12 }} (per 12 jam) <br>
+                                    overcharge Shooting :  {{$mailData['transaksi_items'][1]->durasi_shooting % 12 }} Jam <br>                                    
+                                  </span></td>
+                                  <td class="purchase_item" align="center"><span class="f-fallback">
+                                      Rp. {{number_format($mailData['transaksi_items'][1]->harga_shooting ,2,',','.')}} <br>
+                                      Rp. {{number_format($mailData['transaksi_items'][1]->overcharge_shooting ,2,',','.')}}
+                                  </span></td>
+                                </tr>
+                                <tr>
+                                  <td class="purchase_item" width="25%" align="center"><span class="f-fallback">
+                                    Setting : {{ ($mailData['transaksi_items'][1]->durasi_setting - ($mailData['transaksi_items'][1]->durasi_setting % 12)) / 12 }} (per 12 jam) <br>
+                                    overcharge Setting : {{$mailData['transaksi_items'][1]->durasi_setting / 12}} Jam                                    
+                                  </span></td>
+                                    <td class="purchase_item" align="center"><span class="f-fallback">
+                                      Rp. {{number_format($mailData['transaksi_items'][1]->harga_setting ,2,',','.')}} <br>
+                                      Rp. {{number_format($mailData['transaksi_items'][1]->overcharge_setting ,2,',','.')}}
+                                    </span></td>
+                                </tr>
+                                {{-- {{/each}} --}}
+                                <tr>
+                                  <td colspan="3" class="purchase_footer">
+                                    <p align="center" class="f-fallback purchase_total purchase_total--label">Total</p>
+                                  </td>
+                                  <td class="purchase_footer">
+                                    <p align="center" class="f-fallback purchase_total">Rp. {{number_format($mailData['transaksi_items'][1]->t_harga,2,',','.')}}</p>
+                                  </td>
+                                </tr>
+                                    
+                                @else
+                                    
+                                @endif
                                 {{-- <tr>
                                   <td colspan="3" class="purchase_footer">
                                     <p align="left" class="f-fallback purchase_total purchase_total--label">Yang harus dibayarkan</p>
@@ -579,7 +713,7 @@
                             </td>
                           </tr>
                         </table>
-                        <p>Jika ada pertanyaan tentang tagihan ini, silahkan hubungi <a href="support_url">support team</a></p>
+                        <p>Jika status pembayaran mu belum berubah setelah 1 x 24 jam silahkan hubungi <a href="support_url">support team</a></p>
                         <p>Cheers,
                           <br>Produksi Film Negara</p>
                         <!-- Sub copy -->

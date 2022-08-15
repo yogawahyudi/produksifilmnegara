@@ -282,10 +282,7 @@
                                 <caption>Kalikan setiap nilai kata per label</caption>
                                 {{-- {{dd($testClass)}} --}}
                                 {{-- {{dd($result)}} --}}
-                                @php
-                                 $i = 0;
-                                 $jum = 1;
-                                @endphp
+                               
                                 <thead>
                                     <tr>
                                         <th class="text-center">Label</th>
@@ -294,6 +291,10 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($testClass as $key => $value)
+                                @php
+                                 $i = 0;
+                                 $jum = 1;
+                                @endphp
                                     <tr>
                                         <th class="text-center">
                                             {{$key}}
@@ -306,7 +307,6 @@
                                             @endforeach
                                             {{$jum}}
                                         </td>
-                                        
                                     </tr>
                                     @endforeach
                                 </tbody>

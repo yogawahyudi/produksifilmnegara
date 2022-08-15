@@ -156,7 +156,7 @@ Route::post('/transaksi/store/{id}', [TransaksiController::class, 'storeTransaks
 
 Route::post('/tagihan/{id}/payments', [PembayaranController::class, 'userStore'])->name('store.pembayaran.user')->middleware(['auth', 'verified']);
 
-Route::get('/inv', [TransaksiController::class,  'viewInvoice'])->name('view.invoice');
+Route::get('/transaksi/{id}/inv', [TransaksiController::class,  'viewInvoice'])->name('view.invoice');
 
 Route::get('/profile', [ProfileController::class, 'indexProfile'])->name('index.profile')->middleware(['auth', 'verified']);
 Route::post('/profile/{id}/update-img', [ProfileController::class, 'updateImagesUser'])->name('update.images.user')->middleware(['auth', 'verified']);

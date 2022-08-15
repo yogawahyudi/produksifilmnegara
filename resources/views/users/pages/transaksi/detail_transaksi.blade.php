@@ -78,7 +78,12 @@ overflow-y:hidden;
                 </div>
             </div>
        </div>
-
+       <div class="row p-3 justify-content-end">
+        <div class="col-4 text-end">
+            <a href="{{route('view.invoice', $transaksi->id)}}" type="btutton" class="btn btn-primary"><i class="bx bx-download"> Invoice</i></a>
+        </div>
+       </div>
+       
        @foreach ($transaksi->transaksi_items as $item)
        <div class="row p-3">
         <table class="table table-striped">

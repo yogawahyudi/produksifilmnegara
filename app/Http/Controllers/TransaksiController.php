@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class TransaksiController extends Controller
 {
@@ -45,8 +46,11 @@ class TransaksiController extends Controller
     public function viewTransaksiUser($id)
     {
         $transaksi = Transaksi::where('id', $id)->with(['transaksi_items', 'tagihan'])->first();
-
-        return view('users.pages.transaksi.detail_transaksi', compact(['transaksi', 'transaksi']));
+        if ($transaksi) {
+            return view('users.pages.transaksi.detail_transaksi', compact(['transaksi', 'transaksi']));
+        } else {
+            return redirect()->route('index.transaksi.user');
+        }
     }
 
 
@@ -156,6 +160,9 @@ class TransaksiController extends Controller
             'nominal' => $t_harga * (20 / 100),
         ]);
 
+        $sendMail = new emailController;
+        $sendMail->sendInvoice($transaksi, $transaksi_items, $tagihan, $b_shooting, $b_settting);
+
         return redirect()->route('index.transaksi.user');
     }
 
@@ -219,6 +226,8 @@ class TransaksiController extends Controller
             'nominal' => $t_harga * (20 / 100),
         ]);
 
+        $sendMail = new emailController;
+        $sendMail->sendInvoice($transaksi, $transaksi_items, $tagihan, $b_shooting, $b_settting);
         return redirect()->route('index.transaksi');
     }
 
@@ -229,7 +238,7 @@ class TransaksiController extends Controller
         $transaksi->update([
             'status_tran' => 'dibatalkan'
         ]);
-        Tagihan::where('transaksi_id', $transaksi->id)->delete();
+        // Tagihan::where('transaksi_id', $transaksi->id)->delete();
 
         return redirect()->back();
     }
@@ -252,7 +261,7 @@ class TransaksiController extends Controller
             'overcharge_shooting' => $transaksi_items->overcharge_shooting,
             'durasi_shooting' => $request->durasi,
             'durasi_setting' => 0,
-            't_harga' => $request->durasi * $transaksi_items->harga_shooting,
+            't_harga' => $request->durasi * $transaksi_items->overcharge_shooting,
             'tanggal' => Carbon::now()
         ]);
         $tagihan = Tagihan::create([
@@ -262,6 +271,10 @@ class TransaksiController extends Controller
             'lunas' => 0,
             'nominal' => $request->durasi * $transaksi_items->overcharge_shooting,
         ]);
+
+        $sendMail = new emailController;
+        $sendMail->sendInvoice($transaksi, $newTransaksiItems, $tagihan, $request->durasi * $transaksi_items->overcharge_shooting, 0);
+
         return redirect()->back();
     }
 
@@ -273,5 +286,43 @@ class TransaksiController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function viewInvoice()
+    {
+        $transaksi = Transaksi::with(['tagihan', 'transaksi_items'])->where('id', '8a4b0373-fa30-4bb4-b66a-d88ebca9dc36')->first();
+        $tagihan = $transaksi->tagihan;
+        $transaksi_items = $transaksi->transaksi_items;
+
+        $harga_shooting = $transaksi_items[0]->harga_shooting;
+        $harga_setting = $transaksi_items[0]->harga_setting;
+        $h_overcharge_setting = $transaksi_items[0]->overcharge_setting;
+        $h_overcharge_shooting = $transaksi_items[0]->overcharge_shooting;
+
+        for ($i = 0; $i < count($transaksi_items); $i++) {
+            $dur_overcharge_shooting = $transaksi_items[$i]['durasi_shooting'] % 12;
+            $durshot = ($transaksi_items[$i]['durasi_shooting'] - $dur_overcharge_shooting) / 12;
+            $dur_overcharge_setting = $transaksi_items[$i]['durasi_setting'] % 12;
+            $durset = ($transaksi_items[$i]['durasi_setting'] - $dur_overcharge_setting) / 12;
+
+            $b_shooting[] = ($durshot * $transaksi_items[$i]['harga_shooting']) + ($dur_overcharge_shooting * $transaksi_items[$i]['harga_shooting']);
+            $b_setting[] = ($durset * $transaksi_items[$i]['harga_setting']) + ($dur_overcharge_setting * $transaksi_items[$i]['harga_setting']);
+        }
+
+        $mailData = [
+            'transaksi' => $transaksi,
+            'name' => $transaksi->nama,
+            'tanggal' => $transaksi->created_at,
+            'idTransaksi' => $transaksi->id,
+            'tagihan' => $tagihan,
+            'transaksi_items' => $transaksi_items,
+            'b_shooting' => $b_shooting,
+            'b_setting' => $b_setting
+
+        ];
+
+        $pdf = Pdf::loadView('users.pages.invoice.view_invoice', compact('mailData'));
+        return $pdf->stream('invoice.pdf');
+        // return view('users.pages.invoice.view_invoice', compact('mailData'));
     }
 }
